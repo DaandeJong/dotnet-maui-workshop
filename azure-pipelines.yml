@@ -20,6 +20,18 @@ steps:
     command: 'build'
     projects: 'Finish/MonkeyFinder.sln'
     arguments: '-c Release -f net6.0-android'
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(agent.builddirectory)'
+    Contents: '**/*-Signed.aab'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+    flattenFolders: true
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
